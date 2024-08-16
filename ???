@@ -1,0 +1,41 @@
+import itertools
+import string
+import os
+import logging
+import time
+
+# Configure logging
+logging.basicConfig(filename='bitlocker_cracker.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def brute_force_crack(target_password, max_length=6):
+    logging.info("Starting brute-force attack.")
+    characters = string.ascii_letters + string.digits + string.punctuation
+    for length in range(1, max_length + 1):
+        for attempt in itertools.product(characters, repeat=length):
+            guess = ''.join(attempt)
+            if guess == target_password:
+                logging.info(f"Password found via brute-force: {guess}")
+                return guess
+    logging.info("Brute-force attack failed.")
+    return None
+
+def crack_password():
+    target_password = input("Enter password to crack: ")
+    if not target_password:
+        print("Error: Please enter a password to crack.")
+        return
+
+    # Brute-force attack simulation
+    start_time = time.time()
+    result = brute_force_crack(target_password)
+    end_time = time.time()
+    
+    elapsed_time = end_time - start_time
+    if result:
+        print(f"Password cracked with brute-force attack: {result}\nTime taken: {elapsed_time:.2f} seconds")
+    else:
+        print("Password could not be cracked.")
+
+# Run the cracker
+if __name__ == "__main__":
+    crack_password()
